@@ -4,7 +4,6 @@ import styles from './weather-container.module.css'
 import SavedWeatherHistory from "../components/weather/saved-weather-history.jsx";
 import CityWeather from "../components/weather/city-weather.jsx";
 
-
 export default function WeatherContainer() {
 
     const [currentCity, setCurrentCity] = useState('');
@@ -14,20 +13,16 @@ export default function WeatherContainer() {
         setCurrentCity(city)
     }, [])
 
-    const handleToggleFavorite = (newFavorite, type) => {
-        console.log('handle fav')
-        if (type === 'delete') {
-            console.log('delete')
-            const updatedFavorites = favorites.filter(fav => fav.name !== newFavorite.name);
-            setFavorites([...updatedFavorites])
-        } else if (type === 'add') {
-            if (!favorites.includes(newFavorite)) {
-                console.log('add')
-
-                setFavorites([newFavorite, ...favorites])
-            }
+    const handleAddFavorite = useCallback((newFavorite) => {
+        const favId = favorites.map(fav => fav.id);
+        if (!favId.includes(newFavorite.id)) {
+            setFavorites(favorites => [newFavorite, ...favorites])
         }
-    }
+    }, [setFavorites, favorites]);
+
+    const handleDeleteFavorite = useCallback((newFavorite) => {
+        setFavorites(favorites => favorites.filter(fav => fav.id !== newFavorite.id))
+    }, [setFavorites]);
 
     return (
         <>
@@ -35,12 +30,12 @@ export default function WeatherContainer() {
                 <h2>Météo du jour :</h2>
                 <div className={styles.dayWeatherInnerContent}>
                     <SearchBar onSubmit={handleCitySubmit} placeholder={'Entrez une ville'} />
-                    {currentCity && <CityWeather city={currentCity} onAddFavorite={handleToggleFavorite} />}
+                    {currentCity && <CityWeather city={currentCity} onAddFavorite={handleAddFavorite} />}
                 </div>
             </div>
 
             <div className={styles.history}>
-                <SavedWeatherHistory favorites={favorites} onDeleteFavorite={handleToggleFavorite} />
+                <SavedWeatherHistory favorites={favorites} onDeleteFavorite={handleDeleteFavorite} />
             </div>
         </>
     )

@@ -1,9 +1,9 @@
 .header {
   display: flex;
   justify-content: center;
-  background-color: cornflowerblue;
-  border-bottom: 2px solid rgb(70, 115, 197);
-  box-shadow: 0ch 0.3ch 0.5ch rgb(70, 115, 197);
+  background-color: #646cff ;
+  border-bottom: 2px solid #646cff ;
+  box-shadow: 0ch 0.3ch 0.5ch #646cff ;
   width: 100vw;
   height: 5rem;
 

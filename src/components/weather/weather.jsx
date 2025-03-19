@@ -1,12 +1,11 @@
 import styles from './weather.module.css'
 import FavoriteButton from './favorite-button.jsx';
+import { useCallback } from 'react';
 
-export default function Weather({ type, weather, onHandleFavorite = () => { } }) {
+export default function Weather({ type, weather, onHandleFavorite = () => { }, name }) {
 
     const onToggleFav = () => {
-        console.log('click')
-        console.log(onHandleFavorite)
-        onHandleFavorite(weather, type);
+        onHandleFavorite(weather);
     };
 
     return (

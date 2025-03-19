@@ -7,6 +7,7 @@ export default function CityWeather({ city, onAddFavorite }) {
     const [isLoading, setIsLoading] = useState(false);
     const [onError, setError] = useState(false);
     const [weather, setWeather] = useState(null);
+    const [name, setName] = useState('');
     const [lat, setLat] = useState(null);
     const [lon, setLon] = useState(null);
 
@@ -25,21 +26,29 @@ export default function CityWeather({ city, onAddFavorite }) {
         setLat(null);
         setLon(null);
         setError(false);
+        setName('');
 
         (async () => {
             try {
                 const geoResponse = await axios.get(`${BASE_URL}/geo/1.0/direct`, {
                     signal: controller.signal,
-                    params: { q: city, limit: 1, appid: API_KEY },
+                    params: { q: city, limit: 1, appid: API_KEY, units: "metric", lang: 'fr' },
                 });
 
-                if (ignore || geoResponse.data.length === 0) return;
+                if (ignore || geoResponse.data.length === 0) {
+                    setError(true);
+                    setIsLoading(false);
+                    return;
+                }
 
                 const { lat, lon } = geoResponse.data[0];
                 setLat(lat);
                 setLon(lon);
+                setName(geoResponse.data[0].local_names.fr ?? geoResponse.data[0].name)
+                onCityFound(name);
 
             } catch (error) {
+
                 if (!ignore) {
                     setError(true);
                     setIsLoading(false);
@@ -56,6 +65,10 @@ export default function CityWeather({ city, onAddFavorite }) {
     useEffect(() => {
         if (!lat || !lon) return;
 
+        setWeather(null);
+        setIsLoading(true);
+        setError(false);
+
         let ignore = false;
         const controller = new AbortController();
 
@@ -70,6 +83,13 @@ export default function CityWeather({ city, onAddFavorite }) {
                     setWeather(weatherResponse.data);
                     setIsLoading(false);
                 }
+
+                if (weatherResponse.data.length === 0) {
+                    setError(true);
+                    setIsLoading(false);
+                    return;
+                }
+
             } catch (error) {
                 if (!ignore) {
                     setError(true);
@@ -83,15 +103,14 @@ export default function CityWeather({ city, onAddFavorite }) {
             controller.abort();
         };
     }, [lat, lon, API_KEY]);
-
     return (
         <div>
             {
                 isLoading ?
                     <p>Chargement...</p>
-                    : !!weather ?
-                        <Weather weather={weather} onHandleFavorite={onAddFavorite} type={'add'} />
-                        : onError && <p>Une erreur s'est produite</p>
+                    : onError ?
+                        <p>Une erreur s'est produite</p>
+                        : (!!weather) && <Weather weather={weather} onHandleFavorite={onAddFavorite} type={'add'} name={name} />
             }
         </div>
     );
