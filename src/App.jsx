@@ -1,11 +1,16 @@
 import './App.css'
+import Header from './containers/header/header.jsx'
+import WeatherContainer from './containers/weather-container.jsx'
 
 function App() {
 
   return (
-    <div>
-      <h1>Demo 01</h1>
-    </div>
+    <>
+      <Header />
+      <main>
+        <WeatherContainer />
+      </main>
+    </>
   )
 }
 

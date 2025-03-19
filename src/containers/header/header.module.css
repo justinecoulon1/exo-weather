@@ -1,0 +1,13 @@
+.header {
+  display: flex;
+  justify-content: center;
+  background-color: cornflowerblue;
+  border-bottom: 2px solid rgb(70, 115, 197);
+  box-shadow: 0ch 0.3ch 0.5ch rgb(70, 115, 197);
+  width: 100vw;
+  height: 5rem;
+
+  h1 {
+    font-size: 2rem;
+  }
+}
