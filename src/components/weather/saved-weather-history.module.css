@@ -1,0 +1,11 @@
+.savedWeatherHistoryContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .savedWeatherHistoryInnerContent {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+}
