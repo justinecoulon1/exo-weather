@@ -2,7 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import Weather from "./weather.jsx";
 
-export default function CityWeather({ city, onAddFavorite }) {
+export default function CityWeather({ favorites, city, onAddFavorite, handleDeleteFavorite }) {
 
     const [isLoading, setIsLoading] = useState(false);
     const [onError, setError] = useState(false);
@@ -45,10 +45,7 @@ export default function CityWeather({ city, onAddFavorite }) {
                 setLat(lat);
                 setLon(lon);
                 setName(geoResponse.data[0].local_names.fr ?? geoResponse.data[0].name)
-                onCityFound(name);
-
-            } catch (error) {
-
+            } catch {
                 if (!ignore) {
                     setError(true);
                     setIsLoading(false);
@@ -90,7 +87,7 @@ export default function CityWeather({ city, onAddFavorite }) {
                     return;
                 }
 
-            } catch (error) {
+            } catch {
                 if (!ignore) {
                     setError(true);
                     setIsLoading(false);
@@ -103,6 +100,8 @@ export default function CityWeather({ city, onAddFavorite }) {
             controller.abort();
         };
     }, [lat, lon, API_KEY]);
+
+    const isFavorite = favorites.some(f => f.id === weather?.id)
     return (
         <div>
             {
@@ -110,7 +109,7 @@ export default function CityWeather({ city, onAddFavorite }) {
                     <p>Chargement...</p>
                     : onError ?
                         <p>Une erreur s'est produite</p>
-                        : (!!weather) && <Weather weather={weather} onHandleFavorite={onAddFavorite} type={'add'} name={name} />
+                        : (!!weather) && <Weather isFavorite={isFavorite} weather={weather} onAddToFavorites={() => onAddFavorite(weather)} onRemoveFromFavorites={() => handleDeleteFavorite(weather)} />
             }
         </div>
     );

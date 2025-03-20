@@ -10,7 +10,7 @@ export default function SavedWeatherHistory({ favorites, onDeleteFavorite }) {
             </div>
 
             <div className={styles.savedWeatherHistoryInnerContent}>
-                {favorites.map(f => < Weather key={f.id} weather={f} type={'delete'} onHandleFavorite={onDeleteFavorite} />)}
+                {favorites.map(f => <Weather key={f.id} weather={f} isFavorite={true} onRemoveFromFavorites={() => onDeleteFavorite(f)} />)}
             </div>
         </div>
     )
