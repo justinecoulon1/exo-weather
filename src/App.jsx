@@ -4,14 +4,14 @@ import WeatherContainer from './containers/weather-container.jsx'
 
 function App() {
 
-  return (
-    <>
-      <Header />
-      <main>
-        <WeatherContainer />
-      </main>
-    </>
-  )
+    return (
+        <>
+            <Header />
+            <main>
+                <WeatherContainer />
+            </main>
+        </>
+    )
 }
 
 export default App

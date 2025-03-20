@@ -4,22 +4,22 @@ import loupe from '/loupe.png';
 
 export default function SearchBar({ onSubmit = () => { }, placeholder }) {
 
-        const [text, setText] = useState('');
+    const [text, setText] = useState('');
 
-        const onFormSubmit = useCallback((e) => {
-                e.preventDefault();
-                onSubmit(text);
-                setText('')
-        })
+    const onFormSubmit = useCallback((e) => {
+        e.preventDefault();
+        onSubmit(text);
+        setText('')
+    })
 
-        return (
-                <form className={styles.form} onSubmit={onFormSubmit}>
-                        <TextInput placeholder={placeholder} text={text} onTextChange={setText} />
-                        <button type="submit"> <img className={styles.searchBarImage} src={loupe} alt="search" /></button>
-                </form>
-        )
+    return (
+        <form className={styles.form} onSubmit={onFormSubmit}>
+            <TextInput placeholder={placeholder} text={text} onTextChange={setText} />
+            <button type="submit"> <img className={styles.searchBarImage} src={loupe} alt="search" /></button>
+        </form>
+    )
 }
 
 function TextInput({ placeholder, text, onTextChange }) {
-        return <input type="text" placeholder={placeholder} value={text} onChange={(e) => onTextChange(e.target.value)} />
+    return <input type="text" placeholder={placeholder} value={text} onChange={(e) => onTextChange(e.target.value)} />
 }
